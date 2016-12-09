@@ -8,6 +8,10 @@ package narrowbridge2;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import java.util.concurrent.Semaphore;
 
 /**
  *
@@ -15,23 +19,28 @@ import java.awt.Graphics;
  */
 public class CarApplet extends Applet {
 
-    Car[] Road1cars = new Car[20];
-    Car[] Road2cars = new Car[20];
-    Car[] Road3cars = new Car[20];
+    Car[] Road1cars = new Car[5];
+    Car[] Road2cars = new Car[5];
+    Car[] Road3cars = new Car[5];
     Road Road1, Road2, Road3;
-
+    static Semaphore semaphore = new Semaphore(1);
+    int time=0;
     @Override
     public void init() {
 
-        Road1 = new Road( true, 1);
-        Road2 = new Road( true, 2);
-        Road3 = new Road( false, 3);
+        Road1 = new Road(true, 1);
+        Road2 = new Road(true, 2);
+        Road3 = new Road(false, 3);
 
-        for (int i = 0; i < 20; i++) {
-            Road1cars[i] = new Car(this, 50, 115,Road1);
-            Road2cars[i] = new Car(this, 50, 225,Road2);
-            Road3cars[i] = new Car(this, 50, 335,Road3);
-            
+        for (int i = 0; i < 5; i++) {
+            Road1cars[i] = new Car(this, 50, 115, Road1,time);
+            Road2cars[i] = new Car(this, 50, 225, Road2,time);
+            Road3cars[i] = new Car(this, 50, 335, Road3,time);
+        
+            time+=10;
+        }
+
+        for (int i = 0; i < 5; i++) {
             Road1cars[i].start();
             Road2cars[i].start();
             Road3cars[i].start();
@@ -42,6 +51,11 @@ public class CarApplet extends Applet {
     @Override
     public void paint(Graphics g) {
 
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(CarApplet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //Fixed Roads Drawing.
         g.setColor(Color.BLACK);
 
@@ -89,13 +103,13 @@ public class CarApplet extends Applet {
             g.setColor(Color.RED);
             g.fillOval(180, 290, 20, 20);
         }
-     
-      
-     for (int i = 0; i < 20; i++) {
+
+        for (int i = 0; i < 5; i++) {
             Road1cars[i].paint(g);
             Road2cars[i].paint(g);
             Road3cars[i].paint(g);
         }
 
+        semaphore.release();
     }
 }
