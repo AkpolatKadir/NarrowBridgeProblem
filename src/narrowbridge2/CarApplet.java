@@ -19,12 +19,15 @@ import java.util.concurrent.Semaphore;
  */
 public class CarApplet extends Applet {
 
+    static Semaphore semaphore = new Semaphore(1);
     Car[] Road1cars = new Car[5];
     Car[] Road2cars = new Car[5];
     Car[] Road3cars = new Car[5];
     Road Road1, Road2, Road3;
-    static Semaphore semaphore = new Semaphore(1);
-    int time=0;
+    Bridge bridge = new Bridge();
+
+    int time = 0;
+
     @Override
     public void init() {
 
@@ -33,11 +36,11 @@ public class CarApplet extends Applet {
         Road3 = new Road(false, 3);
 
         for (int i = 0; i < 5; i++) {
-            Road1cars[i] = new Car(this, 50, 115, Road1,time);
-            Road2cars[i] = new Car(this, 50, 225, Road2,time);
-            Road3cars[i] = new Car(this, 50, 335, Road3,time);
-        
-            time+=10;
+            Road1cars[i] = new Car(this, 50, 115, Road1, time);
+            Road2cars[i] = new Car(this, 50, 225, Road2, time);
+            Road3cars[i] = new Car(this, 50, 335, Road3, time);
+
+            time += 10;
         }
 
         for (int i = 0; i < 5; i++) {
@@ -72,6 +75,12 @@ public class CarApplet extends Applet {
                 50, 320, 200, 320);
         g.drawLine(
                 50, 350, 200, 350);
+        
+        
+        g.drawLine(
+                270, 180, 450, 180);
+        g.drawLine(280, 200, 440, 200);
+        g.drawLine(270, 220, 450, 220);
 
         //Road 1 Light.
         if (Road1.getLight()) {

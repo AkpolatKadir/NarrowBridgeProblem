@@ -20,17 +20,16 @@ public class Car extends Thread {
 
     Applet father;
     Road fatherRoad;
-    int speed = 5;
+    int speed = 8;
     int posX;
     int posY;
-    static Semaphore semaphore = new Semaphore(1);
     boolean Lock = true;//Car is locked and won't move.
-
-    int arriveTime;//= (int) (random() * 40 + 1);
-    int currentTime=0;//Will passed from road class.
+    int arriveTime; //(int) (random() * 40 + 1);
+    int currentTime = 0;//Will passed from road class.
     static int colorPicker = 0;
     boolean isOnRoad = false;
     int created = 0;
+    boolean isOnBridge = false;
 
     public Car(Applet mainApplet, int posX, int posY, Road myRoad, int arriveTime) {
         father = mainApplet;
@@ -44,7 +43,7 @@ public class Car extends Thread {
     public void run() {
 
         while (true) {
-            if ( currentTime>=arriveTime) {
+            if (currentTime >= arriveTime ) {
 
                 if (!isOnRoad) {
                     if (fatherRoad.getLight() == false || fatherRoad.isRoadFull())//false means red light.
@@ -55,17 +54,31 @@ public class Car extends Thread {
                     }
                 } else //car is on the road so we  only care if the light is red. 
                 {
-                    if (fatherRoad.getLight() == false) {
+                    if (fatherRoad.getLight() == false && !isOnBridge) {
                         Lock = true;
                     }
                 }
 
-                if (Lock == false ) {//Entered the road.
+                if (Lock == false) {//Entered the road.
                     posX += speed;
                     isOnRoad = true;
                     ++created;
-                    
+
+                    if (posX > 180 && posX < 200 && fatherRoad.getLight()) {//Means it is ready to pass into the bridge.
+                        fatherRoad.decrementCarNumber();
+                        int choose = (int) (random() * 2 + 1);//To randomly choose which lane it is going to enter.
+                        if (choose == 1) {
+                            posX = 270;
+                            posY = 190;
+                        } else {
+                            posX = 270;
+                            posY = 210;
+                        }
+                        isOnBridge = true;
+                    }
+
                     father.repaint();
+
                 }
                 if (created == 1)// constraint for increment function to just work one time
                 {
@@ -73,7 +86,7 @@ public class Car extends Thread {
                     ++created;
                     colorPicker++;
                 }
-                
+
                 try {
                     Thread.sleep(1000);
                     currentTime++;
@@ -81,8 +94,8 @@ public class Car extends Thread {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Car.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-            } else {
+
+            }  else {
 
                 try {
                     Thread.sleep(1000);
@@ -129,7 +142,8 @@ public class Car extends Thread {
                 g.setColor(Color.green);
             }
 
-            g.drawLine(posX, posY, posX + 15, posY);
+            g.drawLine(posX, posY, posX + 10, posY);
         }
     }
+
 }
