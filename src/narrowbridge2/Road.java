@@ -14,11 +14,14 @@ import java.util.logging.Logger;
  * @author Kadir
  */
 public class Road {
+    
     static Semaphore semaphore = new Semaphore(1);
     static Semaphore semaphore2 = new Semaphore(1);
+    static Semaphore semaphore3 = new Semaphore(1);
     boolean light;//Red=false,Green=true
     // boolean isRoadFull=false;
     int carNumber = 0;
+    int elapsedTimeOnGreen=0;
 
     public Road(boolean _light, int lineNumber) {
         this.light = _light;
@@ -32,6 +35,7 @@ public class Road {
     public void changeLight()//Switching between lights.
     {
         this.light = !this.light;
+        elapsedTimeOnGreen=0;
     }
 
     public boolean isRoadFull() {
@@ -58,5 +62,23 @@ public class Road {
         --carNumber;
         semaphore2.release();
     }
-
+    
+    public int getCarPlace()
+    {      
+        return carNumber;
+    }
+    
+    public int getCarNumber()
+    {
+        return carNumber;
+    }
+    public void incrementGreenTime()
+    {
+        elapsedTimeOnGreen++;
+    }
+    
+    public int getElapsedTime()
+    {
+        return elapsedTimeOnGreen;
+    }
 }
