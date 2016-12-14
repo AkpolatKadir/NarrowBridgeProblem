@@ -18,14 +18,14 @@ import java.util.logging.Logger;
  */
 public class Car extends Thread {
 
-    Applet father;
+    
     Road fatherRoad;
     int speed = 10;
     int carLength = 10;
     int posX;
     int posY;
     boolean Lock = true;//Car is locked and won't move.
-    int arriveTime = (int) (random() * 80 + 1);
+    int arriveTime = (int) (random() * 80 )+1;
     int currentTime = 0;//Will passed from road class.
     static int colorPicker = 0;
     boolean isOnRoad = false;
@@ -34,8 +34,8 @@ public class Car extends Thread {
     int queue = 0;
     boolean alive = true;
 
-    public Car(Applet mainApplet, int posX, int posY, Road myRoad) {
-        father = mainApplet;
+    public Car( int posX, int posY, Road myRoad) {
+       // father = mainApplet;
         this.posX = posX;
         this.posY = posY;
         fatherRoad = myRoad;
@@ -111,7 +111,7 @@ public class Car extends Thread {
                         isOnBridge = true;
                     }
 
-                    father.repaint();
+                   
 
                 }
                 if (created == 1)// constraint for increment function to just work one time
@@ -171,17 +171,11 @@ public class Car extends Thread {
         if (alive) {
 
             if (isOnRoad) {
-                if (colorPicker >= 0) {
-                    g.setColor(Color.red);
-                }
-                if (colorPicker >= 5) {
-                    g.setColor(Color.orange);
-                }
-                if (colorPicker >= 10) {
-                    g.setColor(Color.green);
-                }
-
-                g.drawLine(posX, posY, posX + carLength, posY);
+            
+                g.setColor(Color.red);
+                //g.drawLine(posX, posY, posX + carLength, posY);
+                
+                g.drawRect(posX, posY, carLength, 5);
             }
         } else {
 

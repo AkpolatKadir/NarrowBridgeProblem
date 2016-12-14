@@ -28,20 +28,20 @@ public class CarApplet extends Applet {
     Controller controller;
     
     
-    int time = 0;
-
+   
     @Override
     public void init() {
 
         Road1 = new Road(true, 1);
         Road2 = new Road(true, 2);
         Road3 = new Road(false, 3);
-        controller=new Controller(Road1,Road2,Road3);
-
+        controller=new Controller(Road1,Road2,Road3,this);
+        
+        this.setName("Kadir Akpolat");
         for (int i = 0; i < 20; i++) {
-            Road1cars[i] = new Car(this, 50, 115, Road1);
-            Road2cars[i] = new Car(this, 50, 225, Road2);
-            Road3cars[i] = new Car(this, 50, 335, Road3);            
+            Road1cars[i] = new Car( 100, 115, Road1);
+            Road2cars[i] = new Car( 100, 225, Road2);
+            Road3cars[i] = new Car( 100, 335, Road3);            
         }
 
         for (int i = 0; i < 20; i++) {
@@ -65,18 +65,18 @@ public class CarApplet extends Applet {
         g.setColor(Color.BLACK);
 
         g.drawLine(
-                50, 100, 200, 100);
+                100, 100, 200, 100);
         g.drawLine(
-                50, 130, 200, 130);
+                100, 130, 200, 130);
         g.drawLine(
-                50, 210, 200, 210);
+                100, 210, 200, 210);
         g.drawLine(
-                50, 240, 200, 240);
+                100, 240, 200, 240);
 
         g.drawLine(
-                50, 320, 200, 320);
+                100, 320, 200, 320);
         g.drawLine(
-                50, 350, 200, 350);
+                100, 350, 200, 350);
 
         g.drawLine(
                 270, 180, 450, 180);
